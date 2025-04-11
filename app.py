@@ -315,6 +315,7 @@ while running:
             if found_list == None or len(found_list[0]) == 0:
                pass
             else:
+               ordered_songs = found_list[0]
                songs_list = found_list[0]
                curr_directory = found_list[1]
                playlist=Playlist()
@@ -372,6 +373,26 @@ while running:
             shuffle = True
          else:
             shuffle = False
+
+         if shuffle:
+            songs_list = random.shuffle(songs_list)
+            playlist=Playlist()
+            for i in songs_list:
+               playlist.insert(i)
+            #Initialize first song
+            play_song()
+            pygame.mixer.music.pause()
+         else:
+            pass
+            curr_Song = playlist.current.music
+            songs_list = ordered_songs
+            playlist=Playlist()
+            for i in songs_list:
+               playlist.insert(i)
+            #Initialize first song
+            playlist.search(curr_Song)##WORK IN PROGRESS
+            pygame.mixer.music.pause()
+
       
       elif WindowButton.click==True:
          screen = pygame.display.set_mode((900,600), pygame.RESIZABLE)         
