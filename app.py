@@ -309,7 +309,7 @@ y=0
 start_time=pygame.time.get_ticks()
 nxt=False
 prev=False
-my_font = pygame.font.Font('./font/Lexend-VariableFont_wght.ttf', screen.get_height()//48)
+my_font = pygame.font.SysFont('Comic Sans MS', screen.get_height()//36)
 
 shuffle = False
 call_sign_interrupt = False
@@ -428,12 +428,12 @@ while running:
       nextsongtext = my_font.render("Next Song: ", False, (255,255,255))
       prevsongtext = my_font.render("Previous Song: ", False, (255,255,255))
       currsongtext = my_font.render("Current Song: ", False, (255,255,255))
-      screen.blit(text, (screen.get_width() // 2-160,screen.get_height() - 230))
+      screen.blit(text, (screen.get_width() // 2-140,screen.get_height() - 230))
       screen.blit(currsongtext, (screen.get_width() // 2 - 60,screen.get_height() - 260))
       screen.blit(prevsongtext, (screen.get_width() // 2+250, screen.get_height() - prev_button.rect.height // 2 - 100))
-      screen.blit(textprev, (screen.get_width() // 2 +420, screen.get_height() - prev_button.rect.height // 2 -100))
+      screen.blit(textprev, (screen.get_width() // 2 +410, screen.get_height() - prev_button.rect.height // 2 -100))
       screen.blit(nextsongtext, (screen.get_width() // 2+250, screen.get_height() - prev_button.rect.height // 2 - 70))
-      screen.blit(textnext, (screen.get_width() // 2 +380, screen.get_height() - prev_button.rect.height // 2 - 70))
+      screen.blit(textnext, (screen.get_width() // 2 +370, screen.get_height() - prev_button.rect.height // 2 - 70))
    
    pygame.display.update()
 
