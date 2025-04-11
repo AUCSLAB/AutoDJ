@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import filedialog
 import random
 
-# base_dir = os.listdir('music')
 
 #Directory selector
 def select_directory(shuffle = False):
@@ -21,7 +20,7 @@ def select_directory(shuffle = False):
         directory_contents = os.listdir(selected_dir)
         songs = []
         for file in directory_contents:
-           if file[-4:] == ".mp3":
+           if file[-4:] in [".mp3",".wma",".ogg"]:
               songs.append(file)
         print("Selected Directory:", selected_dir)
         print("Directory Contents:", directory_contents)
@@ -251,8 +250,6 @@ pygame.mixer.music.set_endevent(SONG_END)
 def play_song():
    song = os.path.join(curr_directory, playlist.current.music)
    print(song)
-   if not song.endswith('.mp3'):
-      song += '.mp3'
    pygame.mixer.music.load(song)
    pygame.mixer.music.play()
 def play_next_song(callsign_interrupt=False):
@@ -262,8 +259,6 @@ def play_next_song(callsign_interrupt=False):
          next_song = playlist.play_next()
          print(f'Currently playing {next_song}')
          song = os.path.join(curr_directory, next_song)
-         if not song.endswith('.mp3'):
-            song += '.mp3'
          pygame.mixer.music.load(song)
          pygame.mixer.music.play()
          print('next')
@@ -282,8 +277,6 @@ def play_previous_song():
        next_song = playlist.play_prev()
        print(f'Currently playing {next_song}')
        song = os.path.join(curr_directory, next_song)
-       if not song.endswith('.mp3'):
-           song += '.mp3'
        pygame.mixer.music.load(song)
        pygame.mixer.music.play() 
        print('prev')
