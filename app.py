@@ -31,8 +31,15 @@ def select_directory(shuffle = False):
     except Exception as e:
         print(f"Error accessing directory contents: {e}")
         return None
+with open('directory.txt', 'r') as f:
+   curr_directory = f.read()
 
 songs_list = []
+if curr_directory:
+   directory_contents = os.listdir(curr_directory)
+   for file in directory_contents:
+         if file[-4:] in [".mp3",".wma",".ogg"]:
+            songs_list.append(file)
 selected_dir = ''
 print("Stored Directory Contents:", songs_list)
 
@@ -267,7 +274,6 @@ def play_next_song(callsign_interrupt=False):
          print(f'Currently running {callsign}')
          pygame.mixer.music.load(callsign)
          pygame.mixer.music.play()
-         callsign_interrupt = False
    else:
        print("Playlist is empty. Cannot move to the next song.")
 
@@ -282,7 +288,12 @@ def play_previous_song():
        print('prev')
    else:
        print("Playlist is empty. Cannot move to the next song.")
-
+def getLength(song):
+   song=os.path.join(curr_directory, song)
+   song=pygame.mixer.Sound(song)
+   length=song.get_length()
+   return length/60
+   
 # Initialize the music player
 if songs_list == []:
    pass
@@ -306,6 +317,7 @@ my_font = pygame.font.SysFont('Comic Sans MS', screen.get_height()//36)
 
 shuffle = False
 call_sign_interrupt = False
+
 while running:
    for event in pygame.event.get():
       if event.type == pygame.QUIT or XButton.click==True:
@@ -313,11 +325,17 @@ while running:
       if directory_button.click:
             found_list = select_directory(shuffle)
             if found_list == None or len(found_list[0]) == 0:
+               with open('directory.txt', 'w') as f:
+                  f.write('')
+                  songs_list = []
+                  curr_directory = ''
                pass
             else:
                ordered_songs = found_list[0]
                songs_list = found_list[0]
                curr_directory = found_list[1]
+               with open('directory.txt', 'w') as f:
+                  f.write(curr_directory)
                playlist=Playlist()
                for i in songs_list:
                   playlist.insert(i)
@@ -342,18 +360,20 @@ while running:
             call_sign_interrupt=True
             callsign_played=False
             start_time=pygame.time.get_ticks()
-         elif (pygame.time.get_ticks()-start_time)/(60*1000)>20:
+         elif (pygame.time.get_ticks()-start_time)/(60*1000)+getLength(playlist.current.next.music)>30:
             start_time=pygame.time.get_ticks()
             call_sign_interrupt=True
+            
          else: # play next song after a song ends
             print('-- playing next song --')
             
-            if call_sign_interrupt:
-               call_sign_interrupt=False
-               print('-- playing callsign --')
-               play_next_song(callsign_interrupt=True)
-            elif not prev:
-               play_next_song()
+            
+            if not prev:
+               play_next_song(call_sign_interrupt)
+               if call_sign_interrupt:
+                  call_sign_interrupt=False
+                  call_played=False
+               
             else:
                prev=False
                play_previous_song()
