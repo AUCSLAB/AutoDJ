@@ -67,7 +67,7 @@ pause_img = pygame.image.load('./images/pause.png').convert_alpha()
 pause_img = pygame.transform.smoothscale(pause_img, (150, 150))
 next_img = pygame.image.load('./images/next.png').convert_alpha()
 next_img = pygame.transform.smoothscale(next_img, (150, 150))
-prev_img=pygame.image.load('./images/previous.jpg').convert_alpha()
+prev_img=pygame.image.load('./images/previous.png').convert_alpha()
 prev_img=pygame.transform.smoothscale(prev_img,(150,150))
 callsign_img = pygame.image.load('./images/callsign.png').convert_alpha()
 callsign_img = pygame.transform.smoothscale(callsign_img, (150, 33))
@@ -337,6 +337,7 @@ while running:
                   curr_directory = ''
                pass
             else:
+               print('weeepe',found_list[0])
                ordered_songs = found_list[0]
                songs_list = found_list[0]
                curr_directory = found_list[1]
