@@ -36,10 +36,14 @@ with open('directory.txt', 'r') as f:
 
 songs_list = []
 if curr_directory:
-   directory_contents = os.listdir(curr_directory)
-   for file in directory_contents:
-         if file[-4:] in [".mp3",".wma",".ogg"]:
-            songs_list.append(file)
+   try:
+      directory_contents = os.listdir(curr_directory)
+      for file in directory_contents:
+            if file[-4:] in [".mp3",".wma",".ogg"]:
+               songs_list.append(file)
+   except:
+      with open('directory.txt','w') as f:
+         f.write('')
 selected_dir = ''
 print("Stored Directory Contents:", songs_list)
 
@@ -92,12 +96,16 @@ class Node:
       self.music = music
       self.next = None
       self.prev = None
+      self.length = 0
 class Playlist:
    def __init__(self):
       self.head=None
       self.current=None
    def insert(self, music):
       node=Node(music)
+      song=os.path.join(curr_directory, music)
+      song=pygame.mixer.Sound(song)
+      length=song.get_length()/60
       if not self.head:
          self.head=node
          node.next=node
@@ -109,6 +117,8 @@ class Playlist:
          node.next=self.head
          self.head.prev=node
       self.current=self.head
+      self.current.length=length
+   
    def search (self, music):
       if not self.head:
          return False
@@ -288,11 +298,7 @@ def play_previous_song():
        print('prev')
    else:
        print("Playlist is empty. Cannot move to the next song.")
-def getLength(song):
-   song=os.path.join(curr_directory, song)
-   song=pygame.mixer.Sound(song)
-   length=song.get_length()
-   return length/60
+
    
 # Initialize the music player
 if songs_list == []:
@@ -360,7 +366,7 @@ while running:
             call_sign_interrupt=True
             callsign_played=False
             start_time=pygame.time.get_ticks()
-         elif (pygame.time.get_ticks()-start_time)/(60*1000)+getLength(playlist.current.next.music)>30:
+         elif (pygame.time.get_ticks()-start_time)/(60*1000)+playlist.current.next.length>30:
             start_time=pygame.time.get_ticks()
             call_sign_interrupt=True
             
