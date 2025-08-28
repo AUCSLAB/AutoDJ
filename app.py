@@ -3,8 +3,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 import random
-
-
+from datetime import datetime
 #Directory selector
 def select_directory(shuffle = False):
    #pygame has no directory selector, using tk instead to find wanted directory
@@ -271,6 +270,8 @@ def play_song():
    pygame.mixer.music.play()
 def play_next_song(callsign_interrupt=False):
    #Plays the next song in the playlist.
+   if not call_sign_interrupt and playlist.current.length+datetime.now().minute>59:
+      callsign_interrupt=True
    if playlist.head:
       if callsign_interrupt == False:
          next_song = playlist.play_next()
