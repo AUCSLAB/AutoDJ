@@ -1,1 +1,1 @@
-C:/Users/dagim/OneDrive/Documents/WALF-Automation/music
+/mnt/data/Documents/AutoDJ/music
